@@ -1,10 +1,9 @@
 var config = require('./config/dev.js');
 var http = require('http');
+var qs = require('querystring');
+var url = require('url');
 
 http.createServer(function(req, res) {
-   var headers = req.headers;
-   var method = req.method;
-   var url = req.url;
    var body = [];
 
    req.on('error', onConnError);
@@ -21,15 +20,10 @@ http.createServer(function(req, res) {
 
    function onConnEnd() {
       body = Buffer.concat(body).toString();
+      var params = req.method == 'POST' ? qs.parse(body) : url.parse(req.url, true).query;
 
-      console.log("URL: " + url);
-      console.log("METHOD: " + method);
-      for(var i in headers) {
-         console.log("\nINDEX: " + i);
-         console.log("VALUE: " + headers[i]);
-      }
+      console.log(params.msg);
 
-      console.log("BODY: " + body);
 
       res.on('error', function(err) {
          console.error(err);
