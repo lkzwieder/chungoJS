@@ -1,10 +1,8 @@
+const http = require('http');
+const fs = require('fs');
+
 class Base {
    constructor() {
-      const http = require('http');
-      const qs = require('querystring');
-      const url = require('url');
-      const fs = require('fs');
-
       const Router = require('Router.js');
       const Config = require('Config.js');
 
@@ -37,7 +35,7 @@ class Base {
 
                req.body = Buffer.concat(body).toString();
                // TODO run policies before Router
-               new Router(this._configs.routes, this._controllers, req.method == 'POST' ? qs.parse(req.body) : url.parse(req.url, true).query).run(req, res);
+               new Router(this._configs.routes, this._controllers).run(req, res);
             });
          }).listen(this._configs.server.port);
       }, (err) => {

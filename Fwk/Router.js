@@ -1,5 +1,5 @@
 class Router {
-   constructor(routes, controllers, commonParams) {
+   constructor(routes, controllers) {
       this._controllers = controllers;
       this._routes = {};
 
@@ -19,6 +19,10 @@ class Router {
    }
 
    run(req, res) {
+      const qs = require('querystring');
+      const url = require('url');
+
+      let commonParams = req.method == 'POST' ? qs.parse(req.body) : url.parse(req.url, true).query;
       let all = this._routes[req.method].concat(this._routes['ANY']);
       let matches = false;
       for(let regex in all) {
@@ -27,7 +31,7 @@ class Router {
             let howManyGetParams = Object.keys(all[regex].params).length;
             let getParams = [];
             for(let i = 1; i <= howManyGetParams; i++) getParams.push(matches[i]);
-            req.getParams = getParams;
+            req.getParams = getParams; // TODO include commonParams
             let [controller, method] = all[regex].handler.split('.');
             this._controllers[controller][method](req, res);
             break;
