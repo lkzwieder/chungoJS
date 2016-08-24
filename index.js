@@ -1,10 +1,4 @@
 const cluster = require('cluster');
-const http = require('http');
-const qs = require('querystring');
-const url = require('url');
-
-var config = require('./config/dev.js');
-config.routes = require('./config/routes.js');
 
 if(cluster.isMaster) {
    var numReqs = 0;
@@ -20,6 +14,12 @@ if(cluster.isMaster) {
       });
    });
 } else {
+   const http = require('http');
+   const qs = require('querystring');
+   const url = require('url');
+   const fs = require('fs');
+   const Fwk = require('Fwk/Base.js');
+
    http.createServer((req, res) => {
       process.send({cmd: 'notifyRequest'});
 
@@ -38,6 +38,7 @@ if(cluster.isMaster) {
 
       function onConnEnd() {
          body = Buffer.concat(body).toString();
+         let Fwk = new Fwk(req, res);
          let params = req.method == 'POST' ? qs.parse(body) : url.parse(req.url, true).query;
 
          res.on('error', function(err) {
