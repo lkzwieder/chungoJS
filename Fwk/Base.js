@@ -1,5 +1,10 @@
 class Base {
-   constructor(req, res) {
+   constructor() {
+      const http = require('http');
+      const qs = require('querystring');
+      const url = require('url');
+      const fs = require('fs');
+
       const Router = require('Router.js');
       const Config = require('Config.js');
 
@@ -15,16 +20,30 @@ class Base {
          this._services = services;
          this._configs = configs;
 
-         var Router = new Router(this._configs.routes, this._controllers);
+         http.createServer((req, res) => {
+            var body = [];
+            process.send({cmd: 'notifyRequest'});
+
+            req.on('error', (err) => {
+               console.log('Connection error: ', err);
+            });
+
+            req.on('data', (d) => {
+               body.push(d);
+            });
+
+            req.on('end', () => {
+               res.on('error', console.error);
+
+               req.body = Buffer.concat(body).toString();
+               // TODO run policies before Router
+               new Router(this._configs.routes, this._controllers, req.method == 'POST' ? qs.parse(req.body) : url.parse(req.url, true).query).run(req, res);
+            });
+         }).listen(this._configs.server.port);
       }, (err) => {
          console.log("ERR: ", err);
       });
    }
-
-   get controllers () {return this._controllers}
-   get policies () {return this._policies}
-   get services () {return this._services}
-   get configs () {return this._configs}
 
    setControllers() {
       return new Promise((resolve, reject) => {

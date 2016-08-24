@@ -1,5 +1,5 @@
 class Router {
-   constructor(routes, controllers) {
+   constructor(routes, controllers, commonParams) {
       this._controllers = controllers;
       this._routes = {};
 
