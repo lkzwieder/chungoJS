@@ -1,3 +1,5 @@
+var Base = require('./Fwk/Base.js');
+
 const cluster = require('cluster');
 
 if(cluster.isMaster) {
@@ -14,6 +16,5 @@ if(cluster.isMaster) {
       });
    });
 } else {
-   const Fwk = require('Fwk/Base.js');
-   new Fwk();
+   new Base();
 }

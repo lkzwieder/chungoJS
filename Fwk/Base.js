@@ -3,8 +3,8 @@ const fs = require('fs');
 
 class Base {
    constructor() {
-      const Router = require('Router.js');
-      const Config = require('Config.js');
+      const Router = require('./Router.js');
+      const Config = require('./Config.js');
 
       Promise.all([
          this.setControllers(),
@@ -45,12 +45,12 @@ class Base {
 
    setControllers() {
       return new Promise((resolve, reject) => {
-         const root = '../api/controllers';
+         const root = './api/controllers';
          fs.readdir(root, (e, r) => {
             if(e) reject(e);
             var res = {};
             r.forEach((controllerName) => {
-               res[controllerName] = require("${root}/${controllerName}.js");
+               res[controllerName] = require("." + root + "/" + controllerName);
             });
             resolve(res);
          });
@@ -63,12 +63,12 @@ class Base {
 
    setServices() {
       return new Promise((resolve, reject) => {
-         const root = '../api/services';
+         const root = './api/services';
          fs.readdir(root, (e, r) => {
             if(e) reject(e);
             var res = {};
             r.forEach((serviceName) => {
-               res[serviceName] = require("${root}/${serviceName}.js");
+               res[serviceName] = require("." + root + "/" + serviceName);
             });
             resolve(res);
          });
