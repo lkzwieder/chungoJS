@@ -2,24 +2,21 @@ const http = require('http');
 const fs = require('fs');
 
 class Base {
-   constructor() {
-      const Router = require('./Router.js');
-      const Config = require('./Config.js');
-
+   constructor(environment) {
       Promise.all([
          this.setControllers(),
          this.setPolicies(),
          this.setServices(),
-         this.setConfigs()
+         this.setConfigs(environment)
       ]).then((data) => {
          let [controllers, policies, services, configs] = data;
          this._controllers = controllers;
          this._policies = policies;
          this._services = services;
          this._configs = configs;
-
+console.log(this._configs);
          http.createServer((req, res) => {
-            var body = [];
+            let body = [];
             process.send({cmd: 'notifyRequest'});
 
             req.on('error', (err) => {
@@ -32,10 +29,9 @@ class Base {
 
             req.on('end', () => {
                res.on('error', console.error);
-
                req.body = Buffer.concat(body).toString();
                // TODO run policies before Router
-               new Router(this._configs.routes, this._controllers).run(req, res);
+               new require('./Router.js')(this._configs.routes, this._controllers).run(req, res);
             });
          }).listen(this._configs.server.port);
       }, (err) => {
@@ -48,7 +44,7 @@ class Base {
          const root = './api/controllers';
          fs.readdir(root, (e, r) => {
             if(e) reject(e);
-            var res = {};
+            let res = {};
             r.forEach((controllerName) => {
                res[controllerName] = require("." + root + "/" + controllerName);
             });
@@ -66,7 +62,7 @@ class Base {
          const root = './api/services';
          fs.readdir(root, (e, r) => {
             if(e) reject(e);
-            var res = {};
+            let res = {};
             r.forEach((serviceName) => {
                res[serviceName] = require("." + root + "/" + serviceName);
             });
@@ -75,8 +71,12 @@ class Base {
       });
    }
 
-   setConfigs() { //TODO
-
+   setConfigs(environment) { //TODO
+      return new Promise((resolve, reject) => {
+         let Config = new (require('./Config.js'))(environment);
+         let res = Config.data;
+         res ? resolve(res) : reject('error in some settings');
+      });
    }
 }
 

@@ -23,7 +23,7 @@ class Router {
       const url = require('url');
 
       let commonParams = req.method == 'POST' ? qs.parse(req.body) : url.parse(req.url, true).query;
-      let all = this._routes[req.method].concat(this._routes['ANY']);
+      let all = this._routes[req.method].concat(this._routes['ANY']); // TODO unique
       let matches = false;
       for(let regex in all) {
          matches = req.url.match(regex);

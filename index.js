@@ -1,9 +1,6 @@
-var Base = require('./Fwk/Base.js');
-
 const cluster = require('cluster');
-
 if(cluster.isMaster) {
-   var numReqs = 0;
+   let numReqs = 0;
    setInterval(() => {
       console.log('numReqs =', numReqs);
    }, 5000);
@@ -16,5 +13,5 @@ if(cluster.isMaster) {
       });
    });
 } else {
-   new Base();
+   new (require('./Fwk/Base.js'))(process.argv[2] || 'develpment'); // TODO improve this, more flags can be accepted
 }
