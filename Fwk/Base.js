@@ -14,7 +14,7 @@ class Base {
          this._policies = policies;
          this._services = services;
          this._configs = configs;
-console.log(this._configs);
+
          http.createServer((req, res) => {
             let body = [];
             process.send({cmd: 'notifyRequest'});
@@ -31,7 +31,7 @@ console.log(this._configs);
                res.on('error', console.error);
                req.body = Buffer.concat(body).toString();
                // TODO run policies before Router
-               new require('./Router.js')(this._configs.routes, this._controllers).run(req, res);
+               new (require('./Router.js'))(this._configs.routes, this._controllers).run(req, res);
             });
          }).listen(this._configs.server.port);
       }, (err) => {

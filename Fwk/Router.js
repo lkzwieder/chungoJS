@@ -2,7 +2,8 @@ class Router {
    constructor(routes, controllers) {
       this._controllers = controllers;
       this._routes = {};
-
+      
+      let res = {};
       for(let k in routes) {
          let [method, route] = k.split(' ');
          let [kind, r] = route ? [method, route] : ['ANY', method];
@@ -14,8 +15,12 @@ class Router {
             }
          }
          let regex = new RegExp(`^${routeRegex}$`);
-         this._routes[kind][regex] = routes[k];
+//         this._routes[kind][regex] = routes[k];
+         this._routes[kind][r] = routes[k];
+         this._routes[kind][r].regex = regex;
+//         console.log(Object.prototype.toString.call(regex));
       }
+      console.log(this._routes);
    }
 
    run(req, res) {
@@ -23,10 +28,15 @@ class Router {
       const url = require('url');
 
       let commonParams = req.method == 'POST' ? qs.parse(req.body) : url.parse(req.url, true).query;
-      let all = this._routes[req.method].concat(this._routes['ANY']); // TODO unique
+      let all = this._routes['ANY'] || {};
+      for(let kind in this._routes[req.method]) {
+         all[route] = this._routes[req.method][route];
+      }
       let matches = false;
       for(let regex in all) {
          matches = req.url.match(regex);
+         console.log(typeof req.url, req.url, typeof regex, regex);
+         console.log(matches);
          if(matches) {
             let howManyGetParams = Object.keys(all[regex].params).length;
             let getParams = [];
