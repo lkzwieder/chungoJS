@@ -28,6 +28,7 @@ class Router {
       const url = require('url');
 
       let commonParams = req.method == 'POST' ? qs.parse(req.body) : url.parse(req.url, true).query;
+      req.commonParams = commonParams;
       let all = this._routes['ANY'] || {};
 
       for(let route in this._routes[req.method]) {
@@ -39,11 +40,13 @@ class Router {
          matches = req.url.match(all[route].regex);
          matches = matches ? matches.splice(1, matches.length -1) : false;
          if(matches) {
-            let howManyGetParams = Object.keys(all[route].params).length;
-            let getParams = [];
-            for(let i = 0; i < howManyGetParams; i++) getParams.push(matches[i]);
-            req.getParams = getParams; // TODO include commonParams
+            let howManyUrlParams = Object.keys(all[route].params).length;
+            let urlParams = [];
+            for(let i = 0; i < howManyUrlParams; i++) urlParams.push(matches[i]);
+            req.urlParams = urlParams;
             let [controller, method] = all[route].handler.split('.');
+            // Only services are available in controllers, any other thing must be triggered in Services
+            // that is why controllers doesn't have the configs.
             let c = new this._controllers[controller](this._services);
             c[method](req, res);
             break;
