@@ -1,21 +1,24 @@
 class Router {
-   constructor(routes, controllers) {
+   constructor(configs, controllers, services) {
       this._controllers = controllers;
+      this._services = services;
       this._routes = {};
+      for(let k in services) {
+         this._services[k] = new services[k](configs);
+      }
       
-      let res = {};
-      for(let k in routes) {
+      for(let k in configs.routes) {
          let [method, route] = k.split(' ');
          let [kind, r] = route ? [method, route] : ['ANY', method];
-         this._routes[kind] = res[kind] || {};
          let routeRegex = r;
-         if(routes[k].params && Object.keys(routes[k].params).length) {
-            for(let param in routes[k].params) {
-               routeRegex = routeRegex.replace(param, `(${routes[k].params[param]})`);
+         if(configs.routes[k].params && Object.keys(configs.routes[k].params).length) {
+            for(let param in configs.routes[k].params) {
+               routeRegex = routeRegex.replace(param, `(${configs.routes[k].params[param]})`);
             }
          }
          let regex = new RegExp(`^${routeRegex}$`);
-         this._routes[kind][r] = routes[k];
+         this._routes[kind] = this._routes[kind] || {};
+         this._routes[kind][r] = configs.routes[k];
          this._routes[kind][r].regex = regex;
       }
    }
@@ -41,7 +44,8 @@ class Router {
             for(let i = 0; i < howManyGetParams; i++) getParams.push(matches[i]);
             req.getParams = getParams; // TODO include commonParams
             let [controller, method] = all[route].handler.split('.');
-            (this._controllers[controller][method])(req, res);
+            let c = new this._controllers[controller](this._services);
+            c[method](req, res);
             break;
          }
       }

@@ -14,6 +14,7 @@ class Base {
          this._policies = policies;
          this._services = services;
          this._configs = configs;
+         let Router = new (require('./Router.js'))(this._configs, this._controllers, this._services); 
 
          http.createServer((req, res) => {
             let body = [];
@@ -31,7 +32,7 @@ class Base {
                res.on('error', console.error);
                req.body = Buffer.concat(body).toString();
                // TODO run policies before Router
-               new (require('./Router.js'))(this._configs.routes, this._controllers).run(req, res);
+               Router.run(req, res);
             });
          }).listen(this._configs.server.port);
       }, (err) => {
@@ -64,7 +65,7 @@ class Base {
             if(e) reject(e);
             let res = {};
             r.forEach((serviceName) => {
-               res[serviceName] = require("." + root + "/" + serviceName);
+               res[serviceName.slice(0, -3)] = require("." + root + "/" + serviceName);
             });
             resolve(res);
          });
