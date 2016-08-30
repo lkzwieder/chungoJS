@@ -1,0 +1,14 @@
+class TestController {
+   constructor(services) {
+      this._RedisService = services['RedisService'];
+   }
+   
+   getDos(req, res) {
+      console.log("PARAMS: ", req.getParams);
+      console.log("REDIS SERVICE CONFIGS: ", this._RedisService.configs);
+      res.writeHead(200, {'Content-Type': 'application/json'});
+      return res.end(JSON.stringify(req.getParams));
+   }
+}
+
+module.exports = TestController;
