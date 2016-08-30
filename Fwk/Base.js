@@ -46,7 +46,7 @@ class Base {
             if(e) reject(e);
             let res = {};
             r.forEach((controllerName) => {
-               res[controllerName] = require("." + root + "/" + controllerName);
+               res[controllerName.slice(0, -3)] = require("." + root + "/" + controllerName);
             });
             resolve(res);
          });

@@ -15,12 +15,9 @@ class Router {
             }
          }
          let regex = new RegExp(`^${routeRegex}$`);
-//         this._routes[kind][regex] = routes[k];
          this._routes[kind][r] = routes[k];
          this._routes[kind][r].regex = regex;
-//         console.log(Object.prototype.toString.call(regex));
       }
-      console.log(this._routes);
    }
 
    run(req, res) {
@@ -29,21 +26,22 @@ class Router {
 
       let commonParams = req.method == 'POST' ? qs.parse(req.body) : url.parse(req.url, true).query;
       let all = this._routes['ANY'] || {};
-      for(let kind in this._routes[req.method]) {
+
+      for(let route in this._routes[req.method]) {
          all[route] = this._routes[req.method][route];
       }
+
       let matches = false;
-      for(let regex in all) {
-         matches = req.url.match(regex);
-         console.log(typeof req.url, req.url, typeof regex, regex);
-         console.log(matches);
+      for(let route in all) {
+         matches = req.url.match(all[route].regex);
+         matches = matches ? matches.splice(1, matches.length -1) : false;
          if(matches) {
-            let howManyGetParams = Object.keys(all[regex].params).length;
+            let howManyGetParams = Object.keys(all[route].params).length;
             let getParams = [];
-            for(let i = 1; i <= howManyGetParams; i++) getParams.push(matches[i]);
+            for(let i = 0; i < howManyGetParams; i++) getParams.push(matches[i]);
             req.getParams = getParams; // TODO include commonParams
-            let [controller, method] = all[regex].handler.split('.');
-            this._controllers[controller][method](req, res);
+            let [controller, method] = all[route].handler.split('.');
+            (this._controllers[controller][method])(req, res);
             break;
          }
       }
