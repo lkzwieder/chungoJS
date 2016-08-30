@@ -4,17 +4,14 @@ const fs = require('fs');
 class Base {
    constructor(environment) {
       Promise.all([
-         this.setControllers(),
-         this.setPolicies(),
-         this.setServices(),
+         this.setter('controllers'),
+         this.setter('policies'),
+         this.setter('services'),
          this.setConfigs(environment)
       ]).then((data) => {
          let [controllers, policies, services, configs] = data;
-         this._controllers = controllers;
-         this._policies = policies;
-         this._services = services;
-         this._configs = configs;
-         let Router = new (require('./Router.js'))(this._configs, this._controllers, this._services); 
+         let Policer = new (require('./Policer.js'))(configs, policies);
+         let Router = new (require('./Router.js'))(configs, controllers, services);
 
          http.createServer((req, res) => {
             let body = [];
@@ -31,48 +28,30 @@ class Base {
             req.on('end', () => {
                res.on('error', console.error);
                req.body = Buffer.concat(body).toString();
-               // TODO run policies before Router
+               Policer.run(req, res);
                Router.run(req, res);
             });
-         }).listen(this._configs.server.port);
+         }).listen(configs.server.port);
       }, (err) => {
          console.log("ERR: ", err);
       });
    }
 
-   setControllers() {
+   setter(kind) {
       return new Promise((resolve, reject) => {
-         const root = './api/controllers';
+         const root = `./api/${kind}`;
          fs.readdir(root, (e, r) => {
             if(e) reject(e);
             let res = {};
-            r.forEach((controllerName) => {
-               res[controllerName.slice(0, -3)] = require("." + root + "/" + controllerName);
+            r.forEach((name) => {
+               res[name.slice(0, -3)] = require("." + root + "/" + name);
             });
             resolve(res);
          });
       });
    }
 
-   setPolicies() { //TODO
-
-   }
-
-   setServices() {
-      return new Promise((resolve, reject) => {
-         const root = './api/services';
-         fs.readdir(root, (e, r) => {
-            if(e) reject(e);
-            let res = {};
-            r.forEach((serviceName) => {
-               res[serviceName.slice(0, -3)] = require("." + root + "/" + serviceName);
-            });
-            resolve(res);
-         });
-      });
-   }
-
-   setConfigs(environment) { //TODO
+   setConfigs(environment) {
       return new Promise((resolve, reject) => {
          let Config = new (require('./Config.js'))(environment);
          let res = Config.data;
