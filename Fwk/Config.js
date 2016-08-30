@@ -1,6 +1,6 @@
 const fs = require('fs');
 
-class Config { // TODO improve deepness of configs
+class Config { // FUTURE improve deepness of configs
    constructor(environment) {
       this._data = {};
       const root = './config';

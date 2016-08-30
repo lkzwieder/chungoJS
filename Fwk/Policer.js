@@ -21,7 +21,7 @@ class Policer {
       }
    }
 
-   run(req, res) { // TODO certain configs can provoke some policies execute twice.
+   run(req, res) { // FIXME certain configs can provoke some policies execute twice.
       this._toApply.forEach((policy) => {
          this._policies[policy](req, res);
       })
