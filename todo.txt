@@ -1,0 +1,3 @@
++ Currently certain configurations can run a single policy twice, find and fix the bug
++ Add support for querystrings in Router class
+

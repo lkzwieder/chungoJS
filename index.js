@@ -13,5 +13,5 @@ if(cluster.isMaster) {
       });
    });
 } else {
-   new (require('./Fwk/Base.js'))(process.argv[2] || 'develpment'); // TODO improve this, more flags can be accepted
+   new (require('./Fwk/Base.js'))(process.argv[2] || 'develpment'); // FUTURE improve this, more flags can be accepted
 }

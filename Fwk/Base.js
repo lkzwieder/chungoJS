@@ -10,7 +10,7 @@ class Base {
          this.setConfigs(environment)
       ]).then((data) => {
          let [controllers, policies, services, configs] = data;
-         let Policer = new (require('./Policer.js'))(configs, policies);
+         let Policer = new (require('./Policer.js'))(configs.policies, policies);
          let Router = new (require('./Router.js'))(configs, controllers, services);
 
          http.createServer((req, res) => {
@@ -28,8 +28,12 @@ class Base {
             req.on('end', () => {
                res.on('error', console.error);
                req.body = Buffer.concat(body).toString();
-               Policer.run(req, res);
-               Router.run(req, res);
+               try {
+                  Policer.run(req, res);
+                  Router.run(req, res);
+               } catch(e) {
+                  console.log("ERROR: ", e);
+               }
             });
          }).listen(configs.server.port);
       }, (err) => {
