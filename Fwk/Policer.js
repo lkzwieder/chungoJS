@@ -19,9 +19,11 @@ class Policer {
             }
          }
       }
+
+      this._toApply = this._toApply.filter((value, index, self) => {return self.indexOf(value) === index}); // unique values only
    }
 
-   run(req, res) { // FIXME certain configs can provoke some policies execute twice.
+   run(req, res) {
       this._toApply.forEach((policy) => {
          this._policies[policy](req, res);
       })
