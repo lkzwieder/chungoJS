@@ -16,7 +16,7 @@ class Router {
                routeRegex = routeRegex.replace(param, `(${configs.routes[k].params[param]})`);
             }
          }
-         let regex = new RegExp(`^${routeRegex}$`); // FIXME (\?.*)? add this to obtain querystring, could be or not
+         let regex = new RegExp(`^${routeRegex}(\\?.*)?$`);
          this._routes[kind] = this._routes[kind] || {};
          this._routes[kind][r] = configs.routes[k];
          this._routes[kind][r].regex = regex;
