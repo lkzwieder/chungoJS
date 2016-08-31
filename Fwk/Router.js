@@ -24,11 +24,6 @@ class Router {
    }
 
    run(req, res) {
-      const qs = require('querystring');
-      const url = require('url');
-
-      let commonParams = req.method == 'POST' ? qs.parse(req.body) : url.parse(req.url, true).query;
-      req.commonParams = commonParams;
       let all = this._routes['ANY'] || {};
 
       for(let route in this._routes[req.method]) {
@@ -40,6 +35,10 @@ class Router {
          matches = req.url.match(all[route].regex);
          matches = matches ? matches.splice(1, matches.length -1) : false;
          if(matches) {
+            let qs = require('querystring');
+            let url = require('url');
+            let commonParams = req.method == 'POST' ? qs.parse(req.body) : url.parse(req.url, true).query;
+            req.commonParams = commonParams;
             let howManyUrlParams = Object.keys(all[route].params).length;
             let urlParams = [];
             for(let i = 0; i < howManyUrlParams; i++) urlParams.push(matches[i]);
