@@ -47,8 +47,7 @@ class Router {
             let [controller, method] = all[route].handler.split('.');
             // Only services are available in controllers, any other thing must be triggered in Services
             // that is why controllers doesn't have the configs.
-            let c = new this._controllers[controller](this._services);
-            c[method](req, res);
+            new this._controllers[controller](this._services)[method](req, res);
             break;
          }
       }
