@@ -39,6 +39,7 @@ class Router {
             let url = require('url');
             let commonParams = req.method == 'POST' ? qs.parse(req.body) : url.parse(req.url, true).query;
             req.commonParams = commonParams;
+            all[route].params = all[route].params || {};
             let howManyUrlParams = Object.keys(all[route].params).length;
             let urlParams = [];
             for(let i = 0; i < howManyUrlParams; i++) urlParams.push(matches[i]);

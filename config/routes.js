@@ -1,5 +1,8 @@
 module.exports = {
    all: {
+      '/': {
+         handler: 'TestController.home'
+      },
       'GET /user/id': {
          handler: 'UserController.getId',
          params: {

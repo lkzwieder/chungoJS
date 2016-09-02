@@ -3,6 +3,11 @@ class TestController {
       this._RedisService = services['RedisService'];
    }
    
+   home(req, res) {
+      res.writeHead(200, {'Content-Type': 'application/json'});
+      return res.end(JSON.stringify('hello world!'));
+   }
+
    getDos(req, res) {
       console.log("PARAMS URL: ", req.urlParams);
       console.log("PARAMS COMMONS: ", req.commonParams);
