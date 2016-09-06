@@ -1,5 +1,6 @@
 class TestController {
    constructor(services) {
+      console.log("entra");
       this._RedisService = services['RedisService'];
    }
    

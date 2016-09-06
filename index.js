@@ -2,7 +2,7 @@ const cluster = require('cluster');
 if(cluster.isMaster) {
    let numReqs = 0;
    setInterval(() => {
-      console.log('numReqs =', numReqs);
+//      console.log('numReqs =', numReqs);
    }, 5000);
 
    const numCPUs = require('os').cpus().length;

@@ -1,5 +1,6 @@
 class Router {
    constructor(configs, controllers, services) {
+      const root = configs.server.root || '';
       this._controllers = controllers;
       this._services = services;
       this._routes = {};
@@ -10,7 +11,7 @@ class Router {
       for(let k in configs.routes) {
          let [method, route] = k.split(' ');
          let [kind, r] = route ? [method, route] : ['ANY', method];
-         let routeRegex = r;
+         let routeRegex = root + r;
          if(configs.routes[k].params && Object.keys(configs.routes[k].params).length) {
             for(let param in configs.routes[k].params) {
                routeRegex = routeRegex.replace(param, `(${configs.routes[k].params[param]})`);
@@ -24,6 +25,7 @@ class Router {
    }
 
    run(req, res) {
+      req.url = req.url.replace('//', '/'); // FIXME nginx bug
       let all = this._routes['ANY'] || {};
 
       for(let route in this._routes[req.method]) {
@@ -50,6 +52,10 @@ class Router {
             new this._controllers[controller](this._services)[method](req, res);
             break;
          }
+      }
+      if(!matches) {
+         res.writeHead(404, {'Content-Type': 'application/json'});
+         return res.end(JSON.stringify('GET OUT OF HERE'));
       }
    }
 }
