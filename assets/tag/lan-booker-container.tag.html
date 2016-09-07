@@ -1,0 +1,20 @@
+<lan-booker-container>
+    <section class='section__hero section--overview' style="background-image: url('/lib/london-sky.jpg');">
+        <div class='hero--grad'></div>
+        <div class='row'>
+            <div class='large-5 columns'>
+                <h1 class='white dot'>Control completo sobre sus encomiendas</h1>
+                <h2 class='white' data-price-tag='b'>Envios en 90 minutos en su localidad. Desde $100.</h2>
+                <a id="overview_load_more_button" class="button button--white" href="#">Learn more</a>
+            </div>
+            <div class='large-5 large-offset-1 columns'>
+                <div class='booker__wrap'>
+                    <lan-booker></lan-booker>
+                </div>
+            </div>
+        </div>
+    </section>
+</lan-booker-container>
+<script>
+    riot.mount('lan-booker', {});
+</script>
