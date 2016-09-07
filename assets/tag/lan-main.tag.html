@@ -5,158 +5,13 @@
             <div class='hero--grad'></div>
             <div class='row'>
                 <div class='large-5 columns'>
-                    <h1 class='white dot'>Complete control over your deliveries</h1>
-                    <h2 class='white' data-price-tag='b'>Send locally in as little as 90 minutes – from £5.</h2>
+                    <h1 class='white dot'>Control completo sobre sus encomiendas</h1>
+                    <h2 class='white' data-price-tag='b'>Envios en 90 minutos en su localidad. Desde $100.</h2>
                     <a id="overview_load_more_button" class="button button--white" href="#">Learn more</a>
                 </div>
                 <div class='large-5 large-offset-1 columns'>
                     <div class='booker__wrap'>
-
-                        <div class='booker'>
-                            <div class='row'>
-                                <div class='small-9 columns'>
-                                    <h3>Book a delivery</h3>
-                                </div>
-                            </div>
-                            <form action="/uk/get_quotes" accept-charset="UTF-8" method="post"><input name="utf8" type="hidden" value="&#x2713;" /><input type="hidden" name="authenticity_token" value="uVDNBp6mTVhMJzf1yB1wmSIt2Gf4ATvF7r8e3jbh2u8lC4qXa/cLfY13LVxk41KZ8DM8wq+TVjWM9ZKjebrNRQ==" /><div class='row'>
-                                <div class='small-6 columns'>
-                                    <label>
-                                        From
-                                        <input placeholder="Postcode" type="text" name="order[pickup_postcode]" id="order_pickup_postcode" />
-                                        <small class='hide pickup_postcode_error'>
-                                            <span class='pickup_postcode_error_text'></span>
-                                        </small>
-                                    </label>
-                                </div>
-                                <div class='small-6 columns'>
-                                    <label>
-                                        To
-                                        <input placeholder="Postcode" type="text" name="order[delivery_postcode]" id="order_delivery_postcode" />
-                                        <small class='hide delivery_postcode_error'>
-                                            <span class='delivery_postcode_error_text'></span>
-                                        </small>
-                                    </label>
-                                </div>
-                            </div>
-                                <div class='row'>
-                                    <div class='small-12 columns'>
-                                        <div class='booker__vehicles'>
-                                            <p class='red vehicle_error hide'>
-                                                <span class='icon-shutl_error icon--error'></span>
-                                                <span class='vehicle_error_text'></span>
-                                            </p>
-                                            <p class='red other_error hide'>
-                                                <span class='icon-shutl_error icon--error'></span>
-                                                <span class='other_error_text'></span>
-                                            </p>
-                                            <small>My item can be delivered by:</small>
-                                            <div class='booker__option'>
-                                                <div class='row'>
-                                                    <div class='small-10 columns'>
-                                                        <div class='booker__vehicle-name'>
-                                                            <i class="fa fa-bicycle" aria-hidden="true"></i>
-                                                            <strong>
-                                                                Bicycle
-                                                            </strong>
-                                                        </div>
-                                                        <div class='booker__dimensions'>
-                                                            <small>
-                                                                <strong>
-                                                                    3kg max.
-                                                                </strong>
-                                                                L30 x W25 x H10 cm
-                                                            </small>
-                                                        </div>
-                                                    </div>
-                                                    <div class='small-2 columns'>
-                                                        <input id="bicycle" class="booker__radio" type="radio" value="bicycle" name="order[vehicle]" />
-                                                        <label for='bicycle'></label>
-                                                    </div>
-                                                </div>
-                                            </div>
-                                            <div class='booker__option'>
-                                                <div class='row'>
-                                                    <div class='small-10 columns'>
-                                                        <div class='booker__vehicle-name'>
-                                                            <i class="fa fa-motorcycle" aria-hidden="true"></i>
-                                                            <strong>
-                                                                Motorbike
-                                                            </strong>
-                                                        </div>
-                                                        <div class='booker__dimensions'>
-                                                            <small>
-                                                                <strong>
-                                                                    6kg max.
-                                                                </strong>
-                                                                L35 x W25 x H25 cm
-                                                            </small>
-                                                        </div>
-                                                    </div>
-                                                    <div class='small-2 columns'>
-                                                        <input id="motorbike" class="booker__radio" type="radio" value="motorbike" name="order[vehicle]" />
-                                                        <label for='motorbike'></label>
-                                                    </div>
-                                                </div>
-                                            </div>
-                                            <div class='booker__option'>
-                                                <div class='row'>
-                                                    <div class='small-10 columns'>
-                                                        <div class='booker__vehicle-name'>
-                                                            <i class="fa fa-car" aria-hidden="true"></i>
-                                                            <strong>
-                                                                Car
-                                                            </strong>
-                                                        </div>
-                                                        <div class='booker__dimensions'>
-                                                            <small>
-                                                                <strong>
-                                                                    50kg max.
-                                                                </strong>
-                                                                L100 x W100 x H75 cm
-                                                            </small>
-                                                        </div>
-                                                    </div>
-                                                    <div class='small-2 columns'>
-                                                        <input id="parcel_car" class="booker__radio" type="radio" value="parcel_car" name="order[vehicle]" />
-                                                        <label for='parcel_car'></label>
-                                                    </div>
-                                                </div>
-                                            </div>
-                                            <div class='booker__option'>
-                                                <div class='row'>
-                                                    <div class='small-10 columns'>
-                                                        <div class='booker__vehicle-name'>
-                                                            <i class="fa fa-truck" aria-hidden="true"></i>
-                                                            <strong>
-                                                                Van
-                                                            </strong>
-                                                        </div>
-                                                        <div class='booker__dimensions'>
-                                                            <small>
-                                                                <strong>
-                                                                    150kg max.
-                                                                </strong>
-                                                                L133 x W133 x H133 cm
-                                                            </small>
-                                                        </div>
-                                                    </div>
-                                                    <div class='small-2 columns'>
-                                                        <input id="small_van" class="booker__radio" type="radio" value="small_van" name="order[vehicle]" />
-                                                        <label for='small_van'></label>
-                                                    </div>
-                                                </div>
-                                            </div>
-                                        </div>
-                                    </div>
-                                </div>
-                                <div class='row'>
-                                    <div class='large-12 columns text-center'>
-                                        <button class='button button--black button--load get_quote'>Get Quote</button>
-                                    </div>
-                                </div>
-                            </form>
-                        </div>
-
+                        <lan-booker></lan-booker>
                     </div>
                 </div>
             </div>
@@ -465,3 +320,6 @@
         </div>
     </div>
 </lan-main>
+<script>
+    riot.mount('lan-booker', {});
+</script>

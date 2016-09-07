@@ -1,0 +1,21 @@
+<lan-booker>
+    <div class='booker'>
+        <div class='row'>
+            <div class='small-9 columns'>
+                <h3>Encargue un envio</h3>
+            </div>
+        </div>
+        <form action="/uk/get_quotes" accept-charset="UTF-8" method="post">
+            <input name="utf8" type="hidden" value="&#x2713;" />
+            <input type="hidden" name="authenticity_token" value="uVDNBp6mTVhMJzf1yB1wmSIt2Gf4ATvF7r8e3jbh2u8lC4qXa/cLfY13LVxk41KZ8DM8wq+TVjWM9ZKjebrNRQ==" />
+            <booker-fromto></booker-fromto>
+            <booker-vehicles></booker-vehicles>
+            <booker-quote></booker-quote>
+        </form>
+    </div>
+</lan-booker>
+<script>
+    riot.mount('booker-fromto', {});
+    riot.mount('booker-vehicles', {});
+    riot.mount('booker-quote', {});
+</script>
